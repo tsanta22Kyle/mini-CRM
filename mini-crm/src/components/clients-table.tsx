@@ -1,10 +1,10 @@
 "use client";
 
-import { clients } from "@/data/clients";
 import { AgGridReact } from "ag-grid-react";
 import { useMemo, useState } from "react";
 
 import { AllCommunityModule, ColDef, ModuleRegistry } from "ag-grid-community";
+import { useClientStore } from "@/store/ClientStore";
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -35,6 +35,7 @@ const clientCols: ColDef<Row>[] = [
 ];
 
 export function ClientsTable() {
+    const  {clients} = useClientStore();
   const mappedClients = clients.map((client) => ({
     nom: client.firstName,
     prénom: client.lastName,
