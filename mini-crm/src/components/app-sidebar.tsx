@@ -7,7 +7,6 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarRail,
-  useSidebar,
 } from "./ui/sidebar";
 import NavClients from "./client/nav-clients";
 import { Cat } from "lucide-react";

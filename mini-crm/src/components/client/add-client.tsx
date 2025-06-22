@@ -20,7 +20,7 @@ export function AddClientForm(){
 //gérer l'ajout des clients avec react hook form
   const { handleSubmit, register } = useForm<addClientField>();
   // état global qui gère les clients
-  const { clients, addClients } = useClientStore();
+  const {  addClients } = useClientStore();
   const router = useRouter();
   const onSubmit: SubmitHandler<addClientField> = (data) => {
     // fomatage de la date en YYYY-MM-DD

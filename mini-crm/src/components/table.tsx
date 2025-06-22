@@ -27,7 +27,7 @@ interface Row {
 const clientCols: ColDef<Row>[] = [
   {
     field: "nom",
-    comparator(valueA, valueB, nodeA, nodeB, isDescending) {
+    comparator(valueA, valueB) {
       if (valueA == valueB) {
         return 0;
       }
