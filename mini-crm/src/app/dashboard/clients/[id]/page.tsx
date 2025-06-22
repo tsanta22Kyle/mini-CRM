@@ -1,39 +1,18 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { useClientStore } from "@/store/ClientStore";
-import { useRouter } from "next/router";
+import { ClientDetailsCard } from "@/components/client/client-details-card";
+import { ClientHistory } from "@/components/client/client-history";
 
-export default function clientDetails() {
-  const router = useRouter();
-  const id = router.query.id;
-  const { clients } = useClientStore();
-  const client = clients.find((client) => client.id == id);
-  if (client == undefined) {
-    return <div>erreur , client {id} non trouvé</div>;
-  }
+export default async function clientDetails({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  // prendre le paramètre id
+  const { id } = await params;
+  
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Infos du client</CardTitle>
-        <CardDescription>identifiant : {id}</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="">
-          <div className="">
-            <CardTitle>Nom : </CardTitle>
-            <CardDescription>{client.firstName}</CardDescription>
-          </div>
-          <div className="">
-            <CardTitle>Nom : </CardTitle>
-            <CardDescription>{client.firstName}</CardDescription>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
+    <div className="grid gap-10">
+      <ClientDetailsCard id={id}></ClientDetailsCard>
+      <ClientHistory id={id}></ClientHistory>
+    </div>
   );
 }

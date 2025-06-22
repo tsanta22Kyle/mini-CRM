@@ -6,5 +6,10 @@ export interface Client {
   phone: string;
   createdAt: string;
   tags?: string[];
-  history?: string[];
+  history?: history[];
+}
+interface history {
+  date: string;
+  type: string;
+  notes: string;
 }

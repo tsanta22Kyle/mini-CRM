@@ -9,11 +9,11 @@ import {
   SidebarRail,
   useSidebar,
 } from "./ui/sidebar";
-import NavClients from "./nav-clients";
-import { Cat, Square } from "lucide-react";
+import NavClients from "./client/nav-clients";
+import { Cat } from "lucide-react";
+import { NavUser } from "./nav-user";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { isMobile } = useSidebar()
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
@@ -34,7 +34,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent>
         <NavClients></NavClients>
       </SidebarContent>
-      <SidebarFooter>{/* <NavUser user={data.user} /> */}</SidebarFooter>
+      <SidebarFooter>
+        <NavUser  />
+
+      </SidebarFooter>
       <SidebarRail />
     </Sidebar>
   );

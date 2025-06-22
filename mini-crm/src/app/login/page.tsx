@@ -5,21 +5,26 @@ import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader,
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { login } from "./actions";
+import { redirect, useRouter } from "next/navigation";
 
 interface Inputs  {
     email : string,
     password : string
 }
 export default function LoginPage(){
-    
+    const router = useRouter();
+
+
     const {    register,
     handleSubmit,
-    watch,
-    formState: { errors },} = useForm<Inputs>();
+    } = useForm<Inputs>();
 
     const onSubmit: SubmitHandler<Inputs> = (data)=>{
             alert(data.email)
+            login()
             console.log(data)
+            router.push('/dashboard')
     }
 
 
