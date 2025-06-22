@@ -1,11 +1,10 @@
-"use client";
+"use client";;
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Plus } from "lucide-react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { SetStateAction, useState } from "react";
-import GlobalLoading from "./loading";
 
 export default function DashBoard() {
     // valeurs de recherche pour le filtre
