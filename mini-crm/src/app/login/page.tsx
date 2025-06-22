@@ -21,9 +21,7 @@ export default function LoginPage(){
     } = useForm<Inputs>();
 
     const onSubmit: SubmitHandler<Inputs> = (data)=>{
-            alert(data.email)
             login()
-            console.log(data)
             router.push('/dashboard')
     }
 
