@@ -1,20 +1,19 @@
 "use client";
 
 import { AgGridReact } from "ag-grid-react";
-import { useMemo, useState } from "react";
-
+import { useMemo } from "react";
 import { AllCommunityModule, ColDef, ModuleRegistry, themeQuartz } from "ag-grid-community";
 import { useClientStore } from "@/store/ClientStore";
 import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 import { clientMapper } from "@/lib/utils";
 
-// activer les fonctionnalités communautaires
 ModuleRegistry.registerModules([AllCommunityModule]);
-interface props {
+
+interface Props {
   filterText: string;
 }
-// pour typer les colonnes
+
 interface Row {
   nom: string;
   prénom: string;
@@ -22,17 +21,11 @@ interface Row {
   téléphone: string;
   "date de création": string;
 }
-
-//definir les colonnes
+//definition des colonnes
 const clientCols: ColDef<Row>[] = [
   {
     field: "nom",
-    comparator(valueA, valueB) {
-      if (valueA == valueB) {
-        return 0;
-      }
-      return valueA > valueB ? 1 : -1;
-    },
+    comparator: (a, b) => a.localeCompare(b),
     sort: "desc",
     unSortIcon: true,
   },
@@ -42,33 +35,25 @@ const clientCols: ColDef<Row>[] = [
   { field: "date de création" },
 ];
 
-export function ClientsTable(props: props) {
+export function ClientsTable({ filterText }: Props) {
   const { clients } = useClientStore();
   const router = useRouter();
-
-
-  const mappedClients = clientMapper(clients);
-
-  const [rowData] = useState<Row[]>(mappedClients);
-  const [colDefs] = useState<ColDef<Row>[]>(clientCols);
   const { theme } = useTheme();
-
-  const defaultColDef = useMemo<ColDef>(
-    () => ({
-      flex: 1,
-      minWidth: 100,
-    }),
-    []
-  );
-
-  const myTheme = themeQuartz.withParams({
-    backgroundColor: theme == "dark"? '#18181b':"#FFFF",
-    foregroundColor: theme=="dark"? '#FEFFFE':"#18181b",
-    headerTextColor: theme=="dark"?'#FEFFFE':"#18181b",
-    headerBackgroundColor:  theme=="dark" ?'#2b2b2e':"#FFFF",
-    oddRowBackgroundColor: 'rgb(0, 0, 0, 0.03)',
-    headerColumnResizeHandleColor:theme=="dark"? '#FEFFFE':"#18181b",
-});
+  // mise en cache des valeurs 
+  const rowData: Row[] = useMemo(() => clientMapper(clients), [clients]);
+  const colDefs = useMemo(() => clientCols, []);
+  const defaultColDef = useMemo<ColDef>(() => ({ flex: 1, minWidth: 100 }), []);
+  // définition des thèmes
+  const myTheme = useMemo(() => {
+    return themeQuartz.withParams({
+      backgroundColor: theme == "dark" ? "#18181b" : "#FFFF",
+      foregroundColor: theme == "dark" ? "#FEFFFE" : "#18181b",
+      headerTextColor: theme == "dark" ? "#FEFFFE" : "#18181b",
+      headerBackgroundColor: theme == "dark" ? "#2b2b2e" : "#FFFF",
+      oddRowBackgroundColor: "rgba(0, 0, 0, 0.03)",
+      headerColumnResizeHandleColor: theme == "dark" ? "#FEFFFE" : "#18181b",
+    });
+  }, [theme]);
 
   return (
     <div className="w-full h-full">
@@ -76,14 +61,12 @@ export function ClientsTable(props: props) {
         rowData={rowData}
         columnDefs={colDefs}
         defaultColDef={defaultColDef}
-        pagination={true}
-        paginationAutoPageSize={true}
-        onRowClicked={(e) => {
-          router.push("/dashboard/clients/" + e.data.id);
-        }}
-        quickFilterText={props.filterText}
+        pagination
+        paginationAutoPageSize
+        onRowClicked={(e) => router.push("/dashboard/clients/" + e.data.id)}
+        quickFilterText={filterText}
         theme={myTheme}
-      ></AgGridReact>
+      />
     </div>
   );
 }
